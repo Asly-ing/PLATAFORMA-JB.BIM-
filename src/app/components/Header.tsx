@@ -3,6 +3,7 @@ import { Sun, Moon, BookOpen, Menu, X, Video } from 'lucide-react';
 import { useTheme } from '@/app/contexts/ThemeContext';
 import { useState } from 'react';
 
+
 export function Header() {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
@@ -12,28 +13,31 @@ export function Header() {
 
   const navLinks = [
     { path: '/', label: 'Inicio' },
-    { path: '/courses', label: 'Cursos' },
-    { path: '/my-classes', label: 'Mis Clases', icon: Video },
-    { path: '/dashboard', label: 'Mi Aprendizaje' },
-    { path: '/community', label: 'Comunidad' },
+    { path: '/about', label: 'Nosotros' },
+    { path: '/courses', label: 'Cursos',},
+  
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent">
-              <BookOpen className="h-6 w-6 text-white" />
+            {/* Logo */}
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="JP.BIM Logo"
+                className="h-10 w-10 object-contain"
+              />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <span className="text-xl font-bold whitespace-nowrap text-primary">
               JP.BIM
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6 ">
             {navLinks.map((link) => (
               <Link
                 key={link.path}

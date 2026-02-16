@@ -10,6 +10,7 @@ import { Login } from '@/app/pages/Login';
 import { Community } from '@/app/pages/Community';
 import { MyClasses } from '@/app/pages/MyClasses';
 import { ClassRoom } from '@/app/pages/ClassRoom';
+import {About} from './pages/About';
 
 export default function App() {
   return (
@@ -20,8 +21,10 @@ export default function App() {
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Landing />} />
+
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:id" element={<CourseDetails />} />
+              <Route path="/about" element={<About />} />
               <Route path="/my-classes" element={<MyClasses />} />
               <Route path="/classroom/:courseId/lesson/:lessonId" element={<ClassRoom />} />
               <Route path="/dashboard" element={<Dashboard />} />
