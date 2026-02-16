@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Sun, Moon, BookOpen, Menu, X, Video } from 'lucide-react';
+import { Sun, Moon, BookOpen, Menu, X, Video,Phone } from 'lucide-react';
 import { useTheme } from '@/app/contexts/ThemeContext';
 import { useState } from 'react';
 
@@ -38,6 +38,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6 ">
+            
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -64,7 +65,15 @@ export function Header() {
                 <Sun className="h-5 w-5" />
               )}
             </button>
-
+               <a
+          href="https://wa.me/573219642017"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted transition-colors"
+        >
+          <Phone className="h-5 w-5" />
+          Contáctenos
+        </a>
             <Link
               to="/login"
               className="hidden md:inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"

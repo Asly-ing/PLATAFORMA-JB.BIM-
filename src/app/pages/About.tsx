@@ -23,11 +23,8 @@ export function About() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center text-white">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              Sobre JP.BIM
+              Foto JP.BIM
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-              Líderes en formación y consultoría BIM en Colombia y Latinoamérica
-            </p>
           </div>
         </div>
       </section>
@@ -58,7 +55,7 @@ export function About() {
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 p-8 flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-                    JP.BIM
+                    FOTO JP.BIM
                   </div>
                   <p className="text-xl font-semibold text-foreground">Autodesk Training Center</p>
                   <div className="mt-8 grid grid-cols-2 gap-4">
