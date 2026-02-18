@@ -26,8 +26,8 @@ export function Landing() {
   ];
 
   const stats = [
-    { value: '10,000+', label: 'Estudiantes' },
-    { value: '150+', label: 'Cursos' },
+    { value: '5,000+', label: 'Estudiantes' },
+    { value: '30+', label: 'Cursos' },
     { value: '95%', label: 'Satisfacción' },
     { value: '24/7', label: 'Acceso' }
   ];
@@ -77,11 +77,10 @@ export function Landing() {
                 <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   BIM
                 </span>{' '}
-                y transforma tu carrera
+                Lidera proyectos. Transforma tu carrera
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                Aprende de expertos en arquitectura, ingeniería y construcción. 
-                Accede a cursos especializados y únete a la revolución digital del sector.
+                la metodología BIM en proyectos reales de arquitectura, estructuras y MEP.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
