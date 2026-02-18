@@ -1,5 +1,24 @@
 import { Link } from 'react-router-dom';
-import { Play, Users, Award, TrendingUp, BookOpen, Clock, Star, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { 
+  Play, 
+  Users, 
+  Award, 
+  TrendingUp, 
+  BookOpen, 
+  Clock, 
+  Star, 
+  ArrowRight, 
+  CheckCircle2,
+  X,
+  Zap,
+  Video,
+  Download,
+  FolderOpen,
+  Route,
+  FileCheck,
+  CreditCard,
+  UsersRound
+} from 'lucide-react';
 
 export function Landing() {
   const features = [
@@ -80,7 +99,8 @@ export function Landing() {
                 Lidera proyectos. Transforma tu carrera
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                la metodología BIM en proyectos reales de arquitectura, estructuras y MEP.
+                Aplicar la metodología BIM en proyectos reales de arquitectura, estructuras y MEP.
+                Con el uso de estándares y buenas prácticas BIM
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -234,6 +254,295 @@ export function Landing() {
                 Comenzar Ahora
                 <CheckCircle2 className="ml-2 h-5 w-5" />
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              -JP.BIM-
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Elige el plan que mejor se adapte a tus objetivos profesionales
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {/* Plan 1 - Monthly Access */}
+            <div className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl transition-all">
+              <div className="p-6 pb-4 border-b border-border">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="h-10 w-10 rounded-lg bg-secondary/10 flex items-center justify-center">
+                      <Zap className="h-5 w-5 text-secondary" />
+                    </div>
+                    <h3 className="text-xl font-bold">ACCESO MENSUAL</h3>
+                  </div>
+                </div>
+                <div className="mb-2">
+                  <span className="text-sm text-muted-foreground line-through">$750,000.00</span>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-secondary">$295,000</span>
+                  <span className="text-muted-foreground">/mes</span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Acceso a todos los cursos por 1 mes</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Máximo 3 certificaciones por mes</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Soporte en foros</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Actualizaciones de cursos incluidas</span>
+                  </li>
+                  <li className="flex items-start gap-3 opacity-50">
+                    <X className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">Sesión grupal en vivo semanal</span>
+                  </li>
+                  <li className="flex items-start gap-3 opacity-50">
+                    <X className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">Licencias de software</span>
+                  </li>
+                  <li className="flex items-start gap-3 opacity-50">
+                    <X className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">Grupo privado exclusivo</span>
+                  </li>
+                  <li className="flex items-start gap-3 opacity-50">
+                    <X className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">Bibliotecas BIM</span>
+                  </li>
+                  <li className="flex items-start gap-3 opacity-50">
+                    <X className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">Proyectos descargables</span>
+                  </li>
+                  <li className="flex items-start gap-3 opacity-50">
+                    <X className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">Ruta de aprendizaje recomendada</span>
+                  </li>
+                </ul>
+
+                <Link
+                  to="/payment/monthly"
+                  className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-secondary text-secondary font-medium hover:bg-secondary hover:text-white transition-colors"
+                >
+                  Elegir Acceso Mensual
+                </Link>
+              </div>
+            </div>
+
+            {/* Plan 2 - Professional BIM Program (Most Popular) */}
+            <div className="rounded-2xl border-2 border-primary bg-card overflow-hidden hover:shadow-xl transition-all relative">
+              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary text-white text-xs font-semibold">
+                MÁS POPULAR
+              </div>
+              
+              <div className="p-6 pb-4 border-b border-border bg-primary/5">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="h-10 w-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                      <Award className="h-5 w-5 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold">PROGRAMA PROFESIONAL BIM</h3>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">6 meses de acceso</p>
+                <div className="mb-2">
+                  <span className="text-sm text-muted-foreground line-through">$1,770,000.00</span>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-primary">$997,000</span>
+                  <span className="text-muted-foreground">/6 meses</span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Acceso a todos los cursos por 6 meses</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Certificación incluida para todos los cursos aprobados</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Soporte en foros</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Actualizaciones de cursos incluidas</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Video className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">1 sesión grupal en vivo semanal</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Zap className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Licencias de software Autodesk durante suscripción</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <UsersRound className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Acceso a grupo privado exclusivo</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <FolderOpen className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Acceso a bibliotecas BIM</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Download className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Acceso a proyectos descargables</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Route className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Ruta de aprendizaje recomendada incluida</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CreditCard className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Opción de pago en 2 cuotas</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Users className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Incluye descuento grupal</span>
+                  </li>
+                  <li className="flex items-start gap-3 opacity-50">
+                    <X className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">Revisión personal de proyectos</span>
+                  </li>
+                </ul>
+
+                <Link
+                  to="/payment/professional"
+                  className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30"
+                >
+                  Elegir Plan Profesional
+                </Link>
+              </div>
+            </div>
+
+            {/* Plan 3 - Specialist BIM Program */}
+            <div className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl transition-all">
+              <div className="p-6 pb-4 border-b border-border">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="h-10 w-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                      <Star className="h-5 w-5 text-accent" />
+                    </div>
+                    <h3 className="text-xl font-bold">PROGRAMA ESPECIALISTA BIM</h3>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">12 meses de acceso</p>
+                <div className="mb-2">
+                  <span className="text-sm text-muted-foreground line-through">$2,490,000.00</span>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-accent">$1,697,000</span>
+                  <span className="text-muted-foreground">/año</span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Acceso a todos los cursos por 1 año</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Certificación incluida para todos los cursos aprobados</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Soporte en foros</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Actualizaciones de cursos incluidas</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Video className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">1 sesión grupal en vivo semanal</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Zap className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Licencias de software Autodesk durante suscripción</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <UsersRound className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Acceso a grupo privado exclusivo</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <FolderOpen className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Acceso a bibliotecas BIM</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Download className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Acceso a proyectos descargables</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Route className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Ruta de aprendizaje recomendada incluida</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <FileCheck className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Incluye revisión personal de proyectos en vivo</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CreditCard className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Opción de pago en 3 cuotas</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Users className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">Incluye descuento grupal</span>
+                  </li>
+                </ul>
+
+                <Link
+                  to="/payment/specialist"
+                  className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-accent text-accent font-medium hover:bg-accent hover:text-white transition-colors"
+                >
+                  Elegir Plan Especialista
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-muted-foreground mb-4">
+              ¿Necesitas un plan personalizado para tu empresa? 
+              <Link to="/contact" className="text-primary hover:text-primary/80 ml-1 font-medium">
+                Contáctanos
+              </Link>
+            </p>
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-secondary" />
+                <span>Garantía de devolución 30 días</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-secondary" />
+                <span>Certificados reconocidos internacionalmente</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-secondary" />
+                <span>Contenido actualizado constantemente</span>
+              </div>
             </div>
           </div>
         </div>
