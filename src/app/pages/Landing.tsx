@@ -284,14 +284,16 @@ export function Landing() {
                   </div>
                 </div>
                 <div className="mb-2">
-                  <span className="text-sm text-muted-foreground line-through">$750,000.00</span>
+                  <span className="text-sm text-muted-foreground line-through">$750,000.00 COP</span>
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-bold text-secondary">$295,000</span>
-                  <span className="text-muted-foreground">/mes</span>
+                  <span className="text-muted-foreground">COP/mes</span>
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  (~$74 USD)
+                </p>
               </div>
-
               <div className="p-6">
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
@@ -362,14 +364,16 @@ export function Landing() {
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">6 meses de acceso</p>
                 <div className="mb-2">
-                  <span className="text-sm text-muted-foreground line-through">$1,770,000.00</span>
+                  <span className="text-sm text-muted-foreground line-through">$1,770,000.00 COP</span>
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-bold text-primary">$997,000</span>
-                  <span className="text-muted-foreground">/6 meses</span>
+                  <span className="text-muted-foreground">COP/6 meses</span>
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  (~$249 USD)
+                </p>
               </div>
-
               <div className="p-6">
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
@@ -448,14 +452,16 @@ export function Landing() {
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">12 meses de acceso</p>
                 <div className="mb-2">
-                  <span className="text-sm text-muted-foreground line-through">$2,490,000.00</span>
+                  <span className="text-sm text-muted-foreground line-through">$2,490,000.00 COP</span>
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold text-accent">$1,697,000</span>
-                  <span className="text-muted-foreground">/año</span>
+                  <span className="text-4xl font-bold text-accent">$1,697,000 </span>
+                  <span className="text-muted-foreground">COP/año</span>
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  (~$424 USD)
+                </p>
               </div>
-
               <div className="p-6">
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
