@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, CreditCard, Building2, Smartphone, Shield, Lock, CheckCircle2 } from 'lucide-react';
+import { X, CreditCard, Building2, Smartphone, Shield, Lock, CheckCircle2, Phone, Mail } from 'lucide-react';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -378,7 +378,23 @@ export function PaymentModal({
                   </p>
                   <p>
                     Garantía de devolución de 30 días si no estás satisfecho con el curso.
+                    Si tienes alguna duda contáctanos a nuestos canales de: 
                   </p>
+                  <a
+                  href="https://wa.me/573219642017"
+                  target="_blank"
+                  className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted"
+                >
+                  <Phone className="h-4 w-4" />
+                  WhatsApp
+                </a>
+                <a
+                  href="mailto:cursos@jpbim.com.co"
+                  className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted"
+                >
+                  <Mail className="h-4 w-4" />
+                  Email
+                </a>
                 </div>
               </div>
             </div>

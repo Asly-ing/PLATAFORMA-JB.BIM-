@@ -11,6 +11,7 @@ import { Community } from '@/app/pages/Community';
 import { MyClasses } from '@/app/pages/MyClasses';
 import { ClassRoom } from '@/app/pages/ClassRoom';
 import {About} from './pages/About';
+import { Libraries } from '@/app/pages/Libraries';
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/login" element={<Login />} />
               <Route path="/community" element={<Community />} />
+              <Route path="/libraries" element={<Libraries />} />
             </Routes>
           </main>
           <Footer />

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Sun, Moon, BookOpen, Menu, X, Video,Phone } from 'lucide-react';
+import { Sun, Moon, BookOpen, Menu, X, Video,Phone, Mail, Facebook, ChevronDown } from 'lucide-react';
 import { useTheme } from '@/app/contexts/ThemeContext';
 import { useState } from 'react';
 
@@ -15,6 +15,7 @@ export function Header() {
     { path: '/', label: 'Inicio' },
     { path: '/about', label: 'Nosotros' },
     { path: '/courses', label: 'Cursos',},
+    { path: '/libraries', label: 'Bibliotecas' },
   
   ];
 
@@ -65,15 +66,45 @@ export function Header() {
                 <Sun className="h-5 w-5" />
               )}
             </button>
-               <a
-          href="https://wa.me/573219642017"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted transition-colors"
-        >
-          <Phone className="h-5 w-5" />
-          Contáctenos
-        </a>
+                   <div className="relative hidden md:block group">
+
+            {/*Contactenos */}
+            <button className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted transition-colors">
+              <Phone className="h-5 w-5" />
+              Contáctenos
+              <ChevronDown className="h-4 w-4" />
+            </button>
+
+              {/* Submenu de contactenos */}
+              <div className="absolute right-0 mt-2 w-48 rounded-lg border bg-background shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                
+                <a
+                  href="https://wa.me/573219642017"
+                  target="_blank"
+                  className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted"
+                >
+                  <Phone className="h-4 w-4" />
+                  WhatsApp
+                </a>
+
+                <a
+                  href="mailto:cursos@jpbim.com.co"
+                  className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted"
+                >
+                  <Mail className="h-4 w-4" />
+                  Email
+                </a>
+
+                <a
+                  href="https://www.facebook.com/profile.php?id=61557482336303"
+                  target="_blank"
+                  className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted"
+                >
+                  <Facebook className="h-4 w-4" />
+                  Facebook
+                </a>
+              </div>
+            </div>
             <Link
               to="/login"
               className="hidden md:inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
