@@ -87,11 +87,11 @@ export function Landing() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 md:py-32">
+      <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-16 sm:py-20 md:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 leading-tight">
                 Domina el{' '}
                 <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   BIM
@@ -120,7 +120,7 @@ export function Landing() {
               <img
                 src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop"
                 alt="BIM Learning"
-                className="rounded-2xl shadow-2xl"
+                className="rounded-2xl shadow-2xl w-full max-w-md mx-auto md:max-w-none"
               />
             </div>
           </div>
@@ -130,10 +130,10 @@ export function Landing() {
       {/* Stats Section */}
       <section className="py-12 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
                   {stat.value}
                 </div>
                 <div className="text-sm text-muted-foreground">{stat.label}</div>
@@ -147,13 +147,13 @@ export function Landing() {
       {/* Features Section */}
       <section className='bg-muted/30' >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <div
                   key={index}
-                  className="p-6 rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg"
+                  className="p-4 sm:p-6 rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-4">
                     <Icon className="h-6 w-6 text-primary" />
@@ -187,7 +187,7 @@ export function Landing() {
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {popularCourses.map((course) => (
               <Link
                 key={course.id}
@@ -204,7 +204,7 @@ export function Landing() {
                     {course.level}
                   </div>
                 </div>
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
                     {course.title}
                   </h3>
@@ -232,7 +232,7 @@ export function Landing() {
       {/* CTA Section */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl bg-gradient-to-br from-primary to-accent p-12 md:p-16 text-center text-white">
+          <div className="rounded-2xl bg-gradient-to-br from-primary to-accent p-8 sm:p-12 md:p-16 text-center text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               ¿Listo para comenzar?
             </h2>
@@ -264,7 +264,7 @@ export function Landing() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
             {/* Plan 1 - Monthly Access */}
             <div className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl transition-all">
               <div className="p-6 pb-4 border-b border-border">
@@ -287,7 +287,7 @@ export function Landing() {
                   (~$74 USD)
                 </p>
               </div>
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0 mt-0.5" />
