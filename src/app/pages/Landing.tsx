@@ -112,7 +112,7 @@ export function Landing() {
                 </Link>
                 <button className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border hover:bg-muted transition-colors">
                   <Play className="mr-2 h-5 w-5" />
-                  Ver Demo
+                  Ver Intro
                 </button>
               </div>
             </div>
@@ -141,19 +141,12 @@ export function Landing() {
             ))}
           </div>
         </div>
+        
       </section>
 
       {/* Features Section */}
-      <section className="py-20">
+      <section className='bg-muted/30' >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              ¿Por qué elegir JP.BIM?
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Ofrecemos la mejor experiencia de aprendizaje en tecnologías BIM
-            </p>
-          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
