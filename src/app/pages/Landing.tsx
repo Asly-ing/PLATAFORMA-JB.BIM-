@@ -44,13 +44,6 @@ export function Landing() {
     }
   ];
 
-  const stats = [
-    { value: '5,000+', label: 'Estudiantes' },
-    { value: '30+', label: 'Cursos' },
-    { value: '95%', label: 'Satisfacción' },
-    { value: '24/7', label: 'Acceso' }
-  ];
-
   const popularCourses = [
     {
       id: 1,
@@ -127,45 +120,42 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-      </section>
-
       {/* Features Section */}
-      <section className='bg-muted/30' >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={index}
-                  className="p-4 sm:p-6 rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-4">
-                    <Icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
-                </div>
-              );
-            })}
+<section className="py-12 bg-muted/30">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      {features.map((feature, index) => {
+        const Icon = feature.icon;
+        return (
+          <div
+            key={index}
+            className="p-6 rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg text-center"
+          >
+            {/* Número grande */}
+            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+              {feature.stat}
+            </div>
+
+            {/* Label pequeño */}
+            <div className="text-sm text-muted-foreground mb-4">
+              {feature.statLabel}
+            </div>
+
+            {/* Icono */}
+            <div className="flex h-12 w-12 mx-auto items-center justify-center rounded-lg bg-primary/10 mb-4">
+              <Icon className="h-6 w-6 text-primary" />
+            </div>
+
+            <h3 className="font-semibold mb-2">{feature.title}</h3>
+            <p className="text-sm text-muted-foreground">
+              {feature.description}
+            </p>
           </div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
       {/* Popular Courses */}
       <section className="py-20 bg-muted/30">
@@ -228,40 +218,14 @@ export function Landing() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl bg-gradient-to-br from-primary to-accent p-8 sm:p-12 md:p-16 text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              ¿Listo para comenzar?
-            </h2>
-            <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
-              Únete a miles de profesionales que están transformando su carrera con JP.BIM
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/login"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-white text-primary font-medium hover:bg-white/90 transition-colors"
-              >
-                Comenzar Ahora
-                <CheckCircle2 className="ml-2 h-5 w-5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       {/* Pricing Section */}
-      <section className="py-20 bg-muted/30">
+      <section className=" bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              -JP.BIM-
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Elige el plan que mejor se adapte a tus objetivos profesionales
-            </p>
+                Elige el plan que mejor se adapte a tus objetivos profesionales
+              </h2>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
@@ -546,6 +510,30 @@ export function Landing() {
           </div>
         </div>
       </section>
+
+      {/* CTA Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-2xl bg-gradient-to-br from-primary to-accent p-8 sm:p-12 md:p-16 text-center text-white">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              ¿Listo para comenzar?
+            </h2>
+            <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
+              Únete a miles de profesionales que están transformando su carrera con JP.BIM
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-white text-primary font-medium hover:bg-white/90 transition-colors"
+              >
+                Comenzar Ahora
+                <CheckCircle2 className="ml-2 h-5 w-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
