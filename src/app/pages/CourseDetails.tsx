@@ -143,6 +143,9 @@ export function CourseDetails() {
                       <Play className="h-5 w-5 text-muted-foreground" />
                       <span>Acceso de por vida</span>
                     </div>
+                    <div className="flex items-center gap-3 text-primary">
+                      <span>Recuerda que tambien tenemos planes accesibles para tu pan de estudio preferido</span>
+                    </div>
                   </div>
                 </div>
               </div>
