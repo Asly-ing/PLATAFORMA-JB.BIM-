@@ -121,51 +121,51 @@ export function Landing() {
       </section>
 
       {/* Features Section */}
-<section className="py-12 bg-muted/30">
-  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-      {features.map((feature, index) => {
-        const Icon = feature.icon;
-        return (
-          <div
-            key={index}
-            className="p-6 rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg text-center"
-          >
-            {/* Número grande */}
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-              {feature.stat}
-            </div>
+      <section className="hidden md:block py-12 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={index}
+                  className="p-4 md:p-6 rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg text-center"
+                >
+                  {/* Número grande */}
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                    {feature.stat}
+                  </div>
 
-            {/* Label pequeño */}
-            <div className="text-sm text-muted-foreground mb-4">
-              {feature.statLabel}
-            </div>
+                  {/* Label pequeño */}
+                  <div className="text-sm text-muted-foreground mb-4">
+                    {feature.statLabel}
+                  </div>
 
-            {/* Icono */}
-            <div className="flex h-12 w-12 mx-auto items-center justify-center rounded-lg bg-primary/10 mb-4">
-              <Icon className="h-6 w-6 text-primary" />
-            </div>
+                  {/* Icono */}
+                  <div className="flex h-12 w-12 mx-auto items-center justify-center rounded-lg bg-primary/10 mb-4">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </div>
 
-            <h3 className="font-semibold mb-2">{feature.title}</h3>
-            <p className="text-sm text-muted-foreground">
-              {feature.description}
-            </p>
+                  <h3 className="font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
+        </div>
+      </section>
 
       {/* Popular Courses */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">
                 Cursos Populares
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-base md:text-lg text-muted-foreground">
                 Los más elegidos por nuestra comunidad
               </p>
             </div>
@@ -188,13 +188,13 @@ export function Landing() {
                   <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-36 md:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium">
                     {course.level}
                   </div>
                 </div>
-                <div className="p-4 sm:p-6">
+                <div className="p-3 md:p-6">
                   <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
                     {course.title}
                   </h3>
@@ -223,7 +223,7 @@ export function Landing() {
       <section className=" bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-2xl font-bold mb-4">
                 Elige el plan que mejor se adapte a tus objetivos profesionales
               </h2>
           </div>
@@ -231,10 +231,10 @@ export function Landing() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
             {/* Plan 1 - Monthly Access */}
             <div className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl transition-all">
-              <div className="p-6 pb-4 border-b border-border">
+              <div className="p-4 md:p-6 pb-4 border-b border-border">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <div className="h-10 w-10 rounded-lg bg-secondary/10 flex items-center justify-center">
+                    <div className="h-9 w-9 md:h-10 md:w-10 rounded-lg bg-secondary/10 flex items-center justify-center">
                       <Zap className="h-5 w-5 text-secondary" />
                     </div>
                     <h3 className="text-xl font-bold">ACCESO MENSUAL</h3>
@@ -244,14 +244,14 @@ export function Landing() {
                   <span className="text-sm text-muted-foreground line-through">$750,000.00 COP</span>
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold text-secondary">$295,000</span>
+                  <span className="text-3xl md:text-4xl font-bold text-secondary">$295,000</span>
                   <span className="text-muted-foreground">COP/mes</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   (~$74 USD)
                 </p>
               </div>
-              <div className="p-4 sm:p-6">
+              <div className="p-4 sm:p-4 md:p-6">
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0 mt-0.5" />
@@ -310,10 +310,10 @@ export function Landing() {
                 MÁS POPULAR
               </div>
               
-              <div className="p-6 pb-4 border-b border-border bg-primary/5">
+              <div className="p-4 md:p-4 md:p-6 pb-4 border-b border-border bg-primary/5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <div className="h-10 w-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <div className="h-9 w-9 md:h-10 md:w-10 rounded-lg bg-primary/20 flex items-center justify-center">
                       <Award className="h-5 w-5 text-primary" />
                     </div>
                     <h3 className="text-xl font-bold">PROGRAMA PROFESIONAL BIM</h3>
@@ -331,7 +331,7 @@ export function Landing() {
                   (~$249 USD)
                 </p>
               </div>
-              <div className="p-6">
+              <div className="p-4 md:p-4 md:p-6">
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -398,10 +398,10 @@ export function Landing() {
 
             {/* Plan 3 - Specialist BIM Program */}
             <div className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl transition-all">
-              <div className="p-6 pb-4 border-b border-border">
+              <div className="p-4 md:p-6 pb-4 border-b border-border">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <div className="h-10 w-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                    <div className="h-9 w-9 md:h-10 md:w-10 rounded-lg bg-accent/20 flex items-center justify-center">
                       <Star className="h-5 w-5 text-accent" />
                     </div>
                     <h3 className="text-xl font-bold">PROGRAMA ESPECIALISTA BIM</h3>
@@ -419,7 +419,7 @@ export function Landing() {
                   (~$424 USD)
                 </p>
               </div>
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
