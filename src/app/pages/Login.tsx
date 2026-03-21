@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from "axios";
 import { BookOpen, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,28 +10,12 @@ export function Login() {
     email: '',
     password: ''
   });
-const navigate = useNavigate();
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
 
-  try {
-    const res = await axios.post("http://localhost:3000/api/login", {
-      email: formData.email,
-      password: formData.password
-    });
-
-    console.log("Respuesta:", res.data);
-
-    if (res.data.success) {
-      navigate("/landing");
-    } else {
-      alert("Correo o contraseña incorrectos");
-    }
-
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle login/register logic here
+    console.log('Form submitted:', formData);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
