@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import * as userModel from '../models/userModel.js';
 import * as emailService from '../services/emailService.js';
+import crypto from 'crypto'
+import { sendVerificationEmail, sendResetEmail } from '../services/emailService.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -175,3 +177,57 @@ export const googleCallback = async (req, res) => {
     res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);
   }
 };
+
+// ======================OLVIDE CONTRASEÑA ===================
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body
+    const user = await userModel.findByEmail(email)
+
+    if (!user) {
+      return res.status(200).json({ message: 'Si el correo existe, recibirás un enlace.' })
+    }
+
+    // Genera token seguro
+    const resetToken = crypto.randomBytes(32).toString('hex')
+    const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex')
+    const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000) // 1 hora
+
+    // Guarda el token hasheado en la BD
+    await userModel.saveResetToken(user.id, resetTokenHash, resetTokenExpiry)
+
+    // Envía el email con el token sin hashear
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`
+    await sendResetEmail(user.email, user.name, resetUrl)
+
+    res.status(200).json({ message: 'Si el correo existe, recibirás un enlace.' })
+  } catch (error) {
+    console.error('forgotPassword error:', error)
+    res.status(500).json({ message: 'Error al procesar la solicitud' })
+  }
+}
+
+// Resetear contraseña con el token
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body
+
+    // Hashea el token recibido para comparar con el de la BD
+    const resetTokenHash = crypto.createHash('sha256').update(token).digest('hex')
+
+    const user = await userModel.findByResetToken(resetTokenHash)
+
+    if (!user) {
+      return res.status(400).json({ message: 'Token inválido o expirado' })
+    }
+
+    // Actualiza la contraseña y limpia el token
+    await userModel.updatePassword(user.id, password)
+    await userModel.clearResetToken(user.id)
+
+    res.status(200).json({ message: 'Contraseña actualizada correctamente' })
+  } catch (error) {
+    console.error('resetPassword error:', error)
+    res.status(500).json({ message: 'Error al resetear la contraseña' })
+  }
+}

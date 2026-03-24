@@ -30,6 +30,8 @@ import { DashboardSettings } from '@/app/pages/dashboard/DashboardSettings'
 import { Login } from '@/app/auth/Login'
 import { Register } from '@/app/auth/Register'
 import { VerifyEmail } from '@/app/auth/VerifyEmail'
+import { ForgotPassword } from '@/app/auth/ForgotPassword'
+import { ResetPassword } from '@/app/auth/ResetPassword'
 
 // ── Guards ──────────────────────────────────────────────────────────────────
 
@@ -111,6 +113,9 @@ function AppRoutes() {
                 <Route path="/about" element={<About />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/libraries" element={<Libraries />} />
+           
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
                 <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
                 <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />

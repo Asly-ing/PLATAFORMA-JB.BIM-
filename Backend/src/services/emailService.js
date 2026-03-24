@@ -59,3 +59,27 @@ export const sendWelcomeEmail = async (email, name) => {
     console.error('Error enviando email de bienvenida:', error);
   }
 };
+
+// fUNCION DE RECUPERAR CONTRASEÑA
+export const sendResetEmail = async (email, name, resetUrl) => {
+  await transporter.sendMail({
+    from: `"JP.BIM" <${process.env.EMAIL_FROM}>`,
+    to: email,
+    subject: 'Recupera tu contraseña — JP.BIM',
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #f97316;">Recuperar contraseña</h2>
+        <p>Hola <strong>${name}</strong>,</p>
+        <p>Recibimos una solicitud para restablecer tu contraseña.</p>
+        <p>Haz clic en el botón para continuar. El enlace expira en <strong>1 hora</strong>.</p>
+        <a href="${resetUrl}" 
+           style="display:inline-block; background:#f97316; color:white; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold; margin: 16px 0;">
+          Restablecer contraseña
+        </a>
+        <p style="color: #666; font-size: 14px;">Si no solicitaste esto, ignora este correo.</p>
+        <hr style="border: none; border-top: 1px solid #eee;" />
+        <p style="color: #999; font-size: 12px;">JP.BIM Platform</p>
+      </div>
+    `
+  })
+}

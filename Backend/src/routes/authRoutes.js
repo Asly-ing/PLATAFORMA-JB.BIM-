@@ -5,7 +5,7 @@ import passport from '../config/passport.js';
 import * as authController from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import { logout } from '../controllers/authController.js';
-
+import { forgotPassword, resetPassword } from '../controllers/authController.js'
 
 
 // ==================== RUTAS ====================
@@ -17,6 +17,8 @@ router.get('/verify-email/:token', authController.verifyEmail);
 router.get('/logout', authController.logout);
 router.get('/me', protect, authController.getMe);
 router.post('/logout', logout);
+router.post('/forgot-password', forgotPassword)
+router.post('/reset-password', resetPassword)
 
 // Rutas de Google OAuth
 router.get('/google', passport.authenticate('google', { 

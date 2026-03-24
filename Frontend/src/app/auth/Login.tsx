@@ -192,9 +192,9 @@ export function Login() {
                     />
                     <span className="text-sm text-gray-600">Recordarme</span>
                   </label>
-                  <button type="button" className="text-sm text-primary hover:text-gray-900 font-medium">
+                  <Link to="/forgot-password" className="text-sm text-primary hover:text-gray-900 font-medium">
                     ¿Olvidaste tu contraseña?
-                  </button>
+                  </Link>
                 </div>
               )}
 

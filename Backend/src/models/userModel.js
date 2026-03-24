@@ -56,15 +56,9 @@ export const createUser = async (userData) => {
       [email, passwordHash, name, role, googleId, verificationToken, verificationExpires, googleId ? 1 : 0]
     );
 
-    // Buscamos el usuario completo incluyendo el token
-    const [userRows] = await pool.query(
-      'SELECT * FROM users WHERE id = ?',
-      [result.insertId]
-    );
-
+    const [userRows] = await pool.query('SELECT * FROM users WHERE id = ?', [result.insertId]);
     const user = userRows[0];
-    user.verification_token = verificationToken; // Nos aseguramos de devolver el token
-
+    user.verification_token = verificationToken;
     return user;
   } catch (error) {
     console.error('Error creating user:', error);
@@ -106,6 +100,55 @@ export const updateLastLogin = async (userId) => {
   }
 };
 
+// ==================== RESET DE CONTRASEÑA ====================
+
+export const saveResetToken = async (id, tokenHash, expiry) => {
+  try {
+    await pool.query(
+      'UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?',
+      [tokenHash, expiry, id]
+    );
+  } catch (error) {
+    console.error('Error saving reset token:', error);
+    throw error;
+  }
+};
+
+export const findByResetToken = async (tokenHash) => {
+  try {
+    const [rows] = await pool.query(
+      'SELECT * FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()',
+      [tokenHash]
+    );
+    return rows[0] || null;
+  } catch (error) {
+    console.error('Error finding user by reset token:', error);
+    throw error;
+  }
+};
+
+export const updatePassword = async (id, newPassword) => {
+  try {
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE users SET password_hash = ? WHERE id = ?', [hashed, id]);
+  } catch (error) {
+    console.error('Error updating password:', error);
+    throw error;
+  }
+};
+
+export const clearResetToken = async (id) => {
+  try {
+    await pool.query(
+      'UPDATE users SET reset_token = NULL, reset_token_expiry = NULL WHERE id = ?',
+      [id]
+    );
+  } catch (error) {
+    console.error('Error clearing reset token:', error);
+    throw error;
+  }
+};
+
 // ==================== SUSCRIPCIONES ====================
 
 export const createSubscription = async (userId, type = 'basic') => {
@@ -135,5 +178,18 @@ export const getUserSubscription = async (userId) => {
     return null;
   }
 };
-// AGREGA ESTA LINEA AL FINAL ABSOLUTO DE userModel.js
-export default { findByEmail, findById, findByGoogleId, createUser, verifyEmail, updateLastLogin, createSubscription, getUserSubscription }
+
+export default {
+  findByEmail,
+  findById,
+  findByGoogleId,
+  createUser,
+  verifyEmail,
+  updateLastLogin,
+  saveResetToken,       
+  findByResetToken,     
+  updatePassword,       
+  clearResetToken,      
+  createSubscription,
+  getUserSubscription,
+}
