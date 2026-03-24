@@ -42,4 +42,4 @@ CREATE INDEX idx_subscriptions_status ON subscriptions(status);
 -- Insertar usuario admin por defecto (cambiar contraseña después)
 -- Contraseña: admin123 (cambiar en producción)
 INSERT INTO users (email, password_hash, name, role, email_verified) 
-VALUES ('admin@jpbim.com', '$2b$10$YourHashedPasswordHere', 'Admin JP.BIM', 'admin', true);
+VALUES ('admin@jpbim.com', '$2b$10$xZa5P5HFYzpRtjcZuyMznOn/BSB9FkcTBhJHeK5rCPh3mETIeAAbi', 'Admin JP.BIM', 'admin', true);

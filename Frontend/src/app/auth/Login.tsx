@@ -58,10 +58,10 @@ export function Login() {
       // Éxito
       if (isLogin) {
         // Redirección según rol
-        if (data.user.role === 'admin') {
-          navigate('/admin/dashboard');
+            if (data.user.role === 'admin') {
+          navigate('/admin');          // AdminDashboard con Header/Footer
         } else {
-          navigate('/dashboard');
+          navigate('/dashboard');      // DashboardLayout para usuarios normales
         }
       } else {
         // Si es registro, avisar que revise el email

@@ -4,6 +4,9 @@ const router = express.Router();
 import passport from '../config/passport.js';
 import * as authController from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
+import { logout } from '../controllers/authController.js';
+
+
 
 // ==================== RUTAS ====================
 
@@ -13,6 +16,7 @@ router.post('/login', authController.login);
 router.get('/verify-email/:token', authController.verifyEmail);
 router.get('/logout', authController.logout);
 router.get('/me', protect, authController.getMe);
+router.post('/logout', logout);
 
 // Rutas de Google OAuth
 router.get('/google', passport.authenticate('google', { 

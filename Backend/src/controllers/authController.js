@@ -130,13 +130,13 @@ export const verifyEmail = async (req, res) => {
 
 // ==================== LOGOUT ====================
 export const logout = (req, res) => {
-  res.cookie('token', 'none', {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
   });
-  res.json({ success: true, message: 'Sesión cerrada' });
+  res.status(200).json({ message: 'Sesión cerrada correctamente' });
 };
-
 // ==================== OBTENER USUARIO ACTUAL ====================
 export const getMe = async (req, res) => {
   try {
