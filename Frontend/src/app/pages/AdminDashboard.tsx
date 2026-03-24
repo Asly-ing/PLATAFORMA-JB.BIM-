@@ -45,21 +45,17 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loggingOut, setLoggingOut] = useState(false);
 
-  const handleLogout = async () => {
-    if (loggingOut) return;
-    setLoggingOut(true);
-    try {
-      await fetch('http://localhost:3000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    } finally {
-      logout();
-      navigate('/login');
-    }
-  };
+ const handleLogout = async () => {
+  if (loggingOut) return
+  setLoggingOut(true)
+  try {
+    await logout()   // el contexto ya hace fetch + setUser(null) + navigate('/login')
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error)
+  } finally {
+    setLoggingOut(false)
+  }
+}
 
   const stats = [
     { label: 'Total Students', value: '12,543', change: '+12.5%', icon: Users,      color: 'orange' },

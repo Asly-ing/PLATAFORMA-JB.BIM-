@@ -33,24 +33,16 @@ export function DashboardSidebar({ isOpen, setIsOpen }: DashboardSidebarProps) {
   ];
 
   const handleLogout = async () => {
-    if (loggingOut) return;
-    setLoggingOut(true);
-
-    try {
-      // 1. Invalida la cookie JWT en el backend
-      await fetch('http://localhost:3000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include', // envía la cookie
-      });
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    } finally {
-      // 2. Limpia el estado del contexto aunque falle el fetch
-      logout();
-      // 3. Redirige al login
-      navigate('/login');
-    }
-  };
+  if (loggingOut) return
+  setLoggingOut(true)
+  try {
+    await logout()   // el contexto ya hace fetch + setUser(null) + navigate('/login')
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error)
+  } finally {
+    setLoggingOut(false)
+  }
+}
 
   return (
     <>

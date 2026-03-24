@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 // Definición de tipos para el formulario
 interface FormData {
@@ -10,7 +11,7 @@ interface FormData {
 }
 
 export function Login() {
-  const navigate = useNavigate();
+  const { login } = useAuth()
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -32,50 +33,34 @@ export function Login() {
   };
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
 
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const body = isLogin 
-        ? { email: formData.email, password: formData.password }
-        : formData;
-
-      const response = await fetch(`http://localhost:3000${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Importante para recibir la cookie
-        body: JSON.stringify(body)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Ocurrió un error');
-      }
-
-      // Éxito
       if (isLogin) {
-        // Redirección según rol
-            if (data.user.role === 'admin') {
-          navigate('/admin');          // AdminDashboard con Header/Footer
-        } else {
-          navigate('/dashboard');      // DashboardLayout para usuarios normales
-        }
+        // Usa el login del contexto — él solo hace el fetch, setUser y navigate
+        await login(formData.email, formData.password)
       } else {
-        // Si es registro, avisar que revise el email
-        alert('¡Cuenta creada! Por favor revisa tu correo para verificar tu cuenta antes de iniciar sesión.');
-        setIsLogin(true); // Volver al login
-        setFormData({ name: '', email: '', password: '' });
-      }
+        // El registro sigue igual con su propio fetch
+        const res = await fetch('http://localhost:3000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.message || 'Error al registrar')
 
+        alert('¡Cuenta creada! Revisa tu correo para verificar tu cuenta.')
+        setIsLogin(true)
+        setFormData({ name: '', email: '', password: '' })
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">

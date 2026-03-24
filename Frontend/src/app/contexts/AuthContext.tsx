@@ -13,7 +13,7 @@ interface AuthContextType {
   user: User | null
   login: (email: string, password: string) => Promise<void>
   register: (name: string, email: string, password: string) => Promise<void>
-  logout: () => void
+  logout: () => Promise<void>
   loading: boolean
 }
 
@@ -27,7 +27,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Verificar sesión al cargar
     checkAuth()
   }, [])
 
@@ -39,9 +38,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const data = await res.json()
         setUser(data.user)
+      } else {
+        setUser(null)
       }
     } catch (error) {
       console.error('Auth check failed:', error)
+      setUser(null)
     } finally {
       setLoading(false)
     }
@@ -61,11 +63,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const data = await res.json()
+
+    // Actualiza el estado inmediatamente
     setUser(data.user)
-    
-    // Redirigir según rol
+
+    // Redirige según rol
     if (data.user.role === 'admin') {
-      navigate('/admin/dashboard')
+      navigate('/admin')
     } else {
       navigate('/dashboard')
     }
@@ -83,16 +87,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(error.message || 'Error al registrar')
     }
 
-    // Mostrar mensaje de verificación de email
-    navigate('/verify-email-sent')
+    navigate('/verify-email')
   }
 
   const logout = async () => {
-    await fetch(`${API_URL}/auth/logout`, {
-      credentials: 'include'
-    })
-    setUser(null)
-    navigate('/login')
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method: 'POST',          // 👈 POST, no GET
+        credentials: 'include'
+      })
+    } catch (error) {
+      console.error('Logout fetch failed:', error)
+    } finally {
+      setUser(null)              // limpia estado aunque falle el fetch
+      navigate('/login')
+    }
   }
 
   return (
