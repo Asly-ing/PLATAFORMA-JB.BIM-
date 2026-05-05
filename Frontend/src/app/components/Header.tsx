@@ -105,13 +105,24 @@ export function Header() {
                 </a>
               </div>
             </div>
-            <Link
-              to="/login"
-              className="hidden md:inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              Iniciar Sesión
-            </Link>
+            <div className="hidden md:flex items-center w-full">
+              
+              {/* Login */}
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Iniciar Sesión
+              </Link>
 
+              {/* Logo pegado a la derecha */}
+              <img
+                src="/autodesk-logo.png"
+                alt="Autodesk Logo"
+                className="ml-auto h-12 w-auto object-contain opacity-90 hover:opacity-100 transition"
+              />
+
+            </div>
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

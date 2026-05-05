@@ -15,7 +15,10 @@ import { About } from '@/app/pages/About'
 import { Community } from '@/app/pages/Community'
 import { Libraries } from '@/app/pages/Libraries'
 import { ClassRoom } from '@/app/pages/ClassRoom'
-import AdminDashboard from '@/app/pages/AdminDashboard'
+import { AdminOverview } from '@/app/pages/admin/AdminOverview';
+import { AdminCourses } from '@/app/pages/admin/AdminCourses';
+import { AdminUsers } from '@/app/pages/admin/AdminUsers';
+import { AdminLayout } from '@/app/layouts/AdminLayout';
 import AssignmentSubmission from '@/app/pages/AssignmentSubmission'
 import CoursePlayer from '@/app/pages/CoursePlayer'
 
@@ -89,15 +92,12 @@ function AppRoutes() {
         <Route path="settings" element={<DashboardSettings />} />
       </Route>
 
-      {/* ===== ADMIN — sin Header/Footer ===== */}
-      <Route
-        path="/admin"
-        element={
-          <AdminRoute>
-            <AdminDashboard />
-          </AdminRoute>
-        }
-      />
+ {/* Admin Routes - Sin Header/Footer */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminOverview />} />
+            <Route path="courses" element={<AdminCourses />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
 
       {/* ===== RUTAS CON Header/Footer ===== */}
       <Route
