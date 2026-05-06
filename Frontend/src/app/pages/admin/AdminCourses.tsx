@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Plus, Edit, Trash2, Eye, ChevronDown, Filter } from 'lucide-react';
 
 interface Course {
@@ -13,6 +14,7 @@ interface Course {
 }
 
 export function AdminCourses() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
 
@@ -131,7 +133,10 @@ export function AdminCourses() {
             Administra todos los cursos de la plataforma
           </p>
         </div>
-        <button className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors">
+        <button
+          onClick={() => navigate('/admin/courses/create')}
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+        >
           <Plus className="h-5 w-5" />
           Nuevo Curso
         </button>

@@ -19,8 +19,10 @@ import { AdminOverview } from '@/app/pages/admin/AdminOverview';
 import { AdminCourses } from '@/app/pages/admin/AdminCourses';
 import { AdminUsers } from '@/app/pages/admin/AdminUsers';
 import { AdminLayout } from '@/app/layouts/AdminLayout';
+import { AdminCreateCourse } from '@/app/pages/admin/AdminCreateCourse';
 import AssignmentSubmission from '@/app/pages/AssignmentSubmission'
 import CoursePlayer from '@/app/pages/CoursePlayer'
+import { Certifications } from '@/app/pages/Certifications';
 
 // Dashboard sub-pages
 import { DashboardHome } from '@/app/pages/dashboard/DashboardHome'
@@ -96,6 +98,7 @@ function AppRoutes() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminOverview />} />
             <Route path="courses" element={<AdminCourses />} />
+            <Route path="courses/create" element={<AdminCreateCourse />} />
             <Route path="users" element={<AdminUsers />} />
           </Route>
 
@@ -113,6 +116,7 @@ function AppRoutes() {
                 <Route path="/about" element={<About />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/libraries" element={<Libraries />} />
+                <Route path="/certifications" element={<Certifications />} />
            
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />

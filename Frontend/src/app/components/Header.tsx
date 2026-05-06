@@ -16,6 +16,7 @@ export function Header() {
     { path: '/about', label: 'Nosotros' },
     { path: '/courses', label: 'Cursos',},
     { path: '/libraries', label: 'Bibliotecas' },
+    { path: '/certifications', label: 'Certificaciones' },
   
   ];
 
