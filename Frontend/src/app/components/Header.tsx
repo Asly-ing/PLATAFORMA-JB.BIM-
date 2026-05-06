@@ -114,15 +114,15 @@ export function Header() {
               >
                 Iniciar Sesión
               </Link>
+            </div>
+              <div className="flex-1" />
 
-              {/* Logo pegado a la derecha */}
+              {/* Logo Autodesk totalmente a la derecha */}
               <img
                 src="/autodesk-logo.png"
                 alt="Autodesk Logo"
-                className="ml-auto h-12 w-auto object-contain opacity-90 hover:opacity-100 transition"
+                className="h-7 w-AUTO object-contain opacity-90 hover:opacity-100 transition -mr-25"
               />
-
-            </div>
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

@@ -1,4 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useAuth } from '@/app/contexts/AuthContext'; 
 import { 
   LayoutDashboard, 
   BookOpen, 
@@ -19,6 +21,8 @@ interface AdminSidebarProps {
 export function AdminSidebar({ isOpen, setIsOpen }: AdminSidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth(); 
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const menuItems = [
     { path: '/admin', label: 'Overview', icon: LayoutDashboard },
@@ -28,10 +32,17 @@ export function AdminSidebar({ isOpen, setIsOpen }: AdminSidebarProps) {
     { path: '/admin/settings', label: 'Configuración', icon: Settings },
   ];
 
-  const handleLogout = () => {
-    // Aquí iría la lógica de logout
-    navigate('/login');
-  };
+  const handleLogout = async () => {
+  if (loggingOut) return
+  setLoggingOut(true)
+  try {
+    await logout()   // el contexto ya hace fetch + setUser(null) + navigate('/login')
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error)
+  } finally {
+    setLoggingOut(false)
+  }
+}
 
   return (
     <>
@@ -104,13 +115,18 @@ export function AdminSidebar({ isOpen, setIsOpen }: AdminSidebarProps) {
           <div className="p-4 border-t border-border">
             <button
               onClick={handleLogout}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-all ${
+              disabled={loggingOut}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                 !isOpen ? 'justify-center' : ''
               }`}
               title={!isOpen ? 'Cerrar Sesión' : ''}
             >
-              <LogOut className="h-5 w-5 flex-shrink-0" />
-              {isOpen && <span className="font-medium">Cerrar Sesión</span>}
+              <LogOut className={`h-5 w-5 flex-shrink-0 ${loggingOut ? 'animate-spin' : ''}`} />
+              {isOpen && (
+                <span className="font-medium">
+                  {loggingOut ? 'Cerrando...' : 'Cerrar Sesión'}
+                </span>
+              )}
             </button>
           </div>
         </div>

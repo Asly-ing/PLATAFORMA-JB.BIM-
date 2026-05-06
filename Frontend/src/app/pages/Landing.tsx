@@ -84,16 +84,15 @@ export function Landing() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Domina el{' '}
+              <h1 className="text-3xl sm:text-4xl md:text-4xl font-bold mb-6 leading-tight">
+               Domina la metodología {' '}
                 <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   BIM
                 </span>{' '}
-                Lidera proyectos. Transforma tu carrera
+                en todas las disciplinas de la construcción y aprende cómo se desarrolla un proyecto real.
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                Aplicar la metodología BIM en proyectos reales de arquitectura, estructuras y MEP.
-                Con el uso de estándares y buenas prácticas BIM
+                Desde el modelado en arquitectura, estructuras y MEP, hasta la coordinación, planificación, control de costos y trabajo colaborativo, todo organizado paso a paso.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
