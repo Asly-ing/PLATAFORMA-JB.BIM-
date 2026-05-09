@@ -97,8 +97,8 @@ function AppRoutes() {
  {/* Admin Routes - Sin Header/Footer */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminOverview />} />
-            <Route path="courses" element={<AdminCourses />} />
-            <Route path="courses/create" element={<AdminCreateCourse />} />
+            <Route path="/admin/courses" element={<AdminCourses />} />
+            <Route path="/admin/courses/create" element={<AdminCreateCourse />} />
             <Route path="users" element={<AdminUsers />} />
           </Route>
 

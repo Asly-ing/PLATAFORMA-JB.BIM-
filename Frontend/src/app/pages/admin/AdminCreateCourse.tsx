@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash2, Upload, X, Video, FileText, GripVertical } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Upload, X, Video, GripVertical } from 'lucide-react';
 
 interface Lesson {
   id: string;
   title: string;
-  type: 'video' | 'text' | 'quiz';
   duration: string;
-  videoUrl?: string;
-  content?: string;
+  videoUrl: string;
 }
 
 interface Module {
@@ -20,15 +18,14 @@ interface Module {
 
 export function AdminCreateCourse() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const [courseData, setCourseData] = useState({
     title: '',
-    instructor: '',
     category: '',
     status: 'draft' as 'draft' | 'published' | 'archived',
     description: '',
     price: '',
-    thumbnail: '',
-    duration: '',
     level: 'beginner' as 'beginner' | 'intermediate' | 'advanced',
   });
 
@@ -41,7 +38,9 @@ export function AdminCreateCourse() {
     },
   ]);
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  // Estados para subida de imagen
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
   const categories = [
     'BIM Management',
@@ -78,8 +77,8 @@ export function AdminCreateCourse() {
     const newLesson: Lesson = {
       id: Date.now().toString(),
       title: '',
-      type: 'video',
       duration: '',
+      videoUrl: '',
     };
     setModules(modules.map(m =>
       m.id === moduleId ? { ...m, lessons: [...m.lessons, newLesson] } : m
@@ -107,28 +106,53 @@ export function AdminCreateCourse() {
     ));
   };
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Curso creado:', { courseData, modules, selectedCategories });
-    navigate('/admin/courses');
+    setLoading(true);
+
+    const formData = new FormData();
+    
+    formData.append('title', courseData.title);
+    formData.append('description', courseData.description);
+    formData.append('category_id', courseData.category);
+    formData.append('level', courseData.level);
+    formData.append('price', courseData.price);
+    formData.append('status', courseData.status);
+    formData.append('modules', JSON.stringify(modules));
+    
+    if (thumbnailFile) {
+      formData.append('thumbnail', thumbnailFile);
+    }
+
+    try {
+      const res = await fetch('http://localhost:3000/api/admin/courses', {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+      });
+
+      if (res.ok) {
+        navigate('/admin/courses');
+      } else {
+        alert('Ocurrio un error al crear el curso');
+      }
+
+    } catch (error) {
+      console.error('Error creando curso:', error);
+      alert('Ocurrio un error al crear el curso');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const totalLessons = modules.reduce((acc, m) => acc + m.lessons.length, 0);
   const totalVideos = modules.reduce(
-    (acc, m) => acc + m.lessons.filter(l => l.type === 'video').length,
+    (acc, m) => acc + m.lessons.length,
     0
   );
 
   return (
-    <div className="max-w-6xl">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <button
@@ -160,18 +184,6 @@ export function AdminCreateCourse() {
                 value={courseData.title}
                 onChange={(e) => setCourseData({ ...courseData, title: e.target.value })}
                 placeholder="Ej: Certificación Profesional BIM Completa"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Instructor *</label>
-              <input
-                type="text"
-                required
-                value={courseData.instructor}
-                onChange={(e) => setCourseData({ ...courseData, instructor: e.target.value })}
-                placeholder="Nombre del instructor"
                 className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
@@ -228,33 +240,43 @@ export function AdminCreateCourse() {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Duración Total</label>
-              <input
-                type="text"
-                value={courseData.duration}
-                onChange={(e) => setCourseData({ ...courseData, duration: e.target.value })}
-                placeholder="Ej: 24 horas"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Imagen de Portada (URL)</label>
-              <div className="flex gap-2">
+            {/* ✅ Campo de subida de imagen */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-2">Imagen de Portada</label>
+              <div className="relative border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors">
+                {thumbnailPreview ? (
+                  <div className="relative">
+                    <img src={thumbnailPreview} alt="Preview" className="max-h-48 mx-auto rounded-lg mb-4" />
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        setThumbnailFile(null);
+                        setThumbnailPreview(null);
+                      }}
+                      className="absolute top-2 right-2 p-1 bg-black/50 text-white rounded-full hover:bg-black/70"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground mb-2">Haz clic para seleccionar una imagen</p>
+                    <p className="text-xs text-muted-foreground">Formatos PNG, JPG. Maximo 5MB</p>
+                  </>
+                )}
                 <input
-                  type="text"
-                  value={courseData.thumbnail}
-                  onChange={(e) => setCourseData({ ...courseData, thumbnail: e.target.value })}
-                  placeholder="https://..."
-                  className="flex-1 px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  type="file"
+                  accept="image/*"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setThumbnailFile(file);
+                      setThumbnailPreview(URL.createObjectURL(file));
+                    }
+                  }}
                 />
-                <button
-                  type="button"
-                  className="px-4 py-3 rounded-lg border border-border hover:bg-muted transition-colors"
-                >
-                  <Upload className="h-5 w-5" />
-                </button>
               </div>
             </div>
 
@@ -271,37 +293,13 @@ export function AdminCreateCourse() {
           </div>
         </div>
 
-        {/* Categorías Adicionales */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <h2 className="text-2xl font-bold mb-4">Categorías Adicionales</h2>
-          <p className="text-sm text-muted-foreground mb-4">
-            Selecciona todas las categorías que apliquen a este curso
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <button
-                key={category}
-                type="button"
-                onClick={() => toggleCategory(category)}
-                className={`px-4 py-2 rounded-lg border transition-all ${
-                  selectedCategories.includes(category)
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'border-border hover:bg-muted'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Módulos y Lecciones */}
         <div className="rounded-xl border border-border bg-card p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold mb-1">Módulos y Contenido</h2>
               <p className="text-sm text-muted-foreground">
-                {modules.length} módulos · {totalLessons} lecciones · {totalVideos} videos
+                {modules.length} módulos · {totalLessons} lecciones
               </p>
             </div>
             <button
@@ -375,28 +373,13 @@ export function AdminCreateCourse() {
                           className="flex items-start gap-3 p-4 rounded-lg border border-border bg-card/50"
                         >
                           <div className="mt-2">
-                            {lesson.type === 'video' ? (
-                              <Video className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <FileText className="h-4 w-4 text-muted-foreground" />
-                            )}
+                            <Video className="h-4 w-4 text-muted-foreground" />
                           </div>
                           <div className="flex-1 space-y-3">
                             <div className="flex items-center gap-3">
                               <span className="text-xs text-muted-foreground">
                                 Lección {lessonIndex + 1}
                               </span>
-                              <select
-                                value={lesson.type}
-                                onChange={(e) =>
-                                  updateLesson(module.id, lesson.id, 'type', e.target.value)
-                                }
-                                className="text-xs px-2 py-1 rounded border border-border bg-background"
-                              >
-                                <option value="video">Video</option>
-                                <option value="text">Texto</option>
-                                <option value="quiz">Quiz</option>
-                              </select>
                               <button
                                 type="button"
                                 onClick={() => removeLesson(module.id, lesson.id)}
@@ -417,17 +400,15 @@ export function AdminCreateCourse() {
                                 className="col-span-2 px-3 py-2 text-sm rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary"
                               />
 
-                              {lesson.type === 'video' && (
-                                <input
-                                  type="text"
-                                  value={lesson.videoUrl || ''}
-                                  onChange={(e) =>
-                                    updateLesson(module.id, lesson.id, 'videoUrl', e.target.value)
-                                  }
-                                  placeholder="URL del video"
-                                  className="px-3 py-2 text-sm rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary"
-                                />
-                              )}
+                              <input
+                                type="text"
+                                value={lesson.videoUrl}
+                                onChange={(e) =>
+                                  updateLesson(module.id, lesson.id, 'videoUrl', e.target.value)
+                                }
+                                placeholder="URL del video"
+                                className="px-3 py-2 text-sm rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary"
+                              />
 
                               <input
                                 type="text"
@@ -467,12 +448,15 @@ export function AdminCreateCourse() {
           </button>
           <button
             type="submit"
-            className="px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
+            disabled={loading}
+            className="px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium disabled:opacity-50"
           >
-            Crear Curso
+            {loading ? 'Creando curso...' : 'Crear Curso'}
           </button>
         </div>
       </form>
     </div>
   );
 }
+
+export default AdminCreateCourse;

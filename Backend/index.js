@@ -6,6 +6,7 @@ import rateLimit from 'express-rate-limit';
 import passport from './src/config/passport.js'; 
 import dotenv from 'dotenv';
 import authRoutes from './src/routes/authRoutes.js'; 
+import adminRoutes from './src/routes/adminRoutes.js';
 
 dotenv.config();
 
@@ -36,6 +37,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Algo salió mal!' });
 });
+
+app.use('/api/admin', adminRoutes);
+app.use('/uploads', express.static('public/uploads'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
