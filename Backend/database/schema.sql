@@ -68,17 +68,21 @@ CREATE TABLE categories (
 CREATE TABLE courses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NULL,
     subtitle VARCHAR(255) NULL,
+    short_description TEXT NULL,
     description TEXT,
     instructor_id INT NOT NULL,
     category_id INT NULL,
 
     level ENUM('beginner', 'intermediate', 'advanced') DEFAULT 'beginner',
 
-    thumbnail VARCHAR(500) NULL,
+    image_url VARCHAR(500) NULL,
+    image_public_id VARCHAR(255) NULL,
     preview_video VARCHAR(500) NULL,
 
     price DECIMAL(10,2) DEFAULT 0,
+    discount_price DECIMAL(10,2) DEFAULT 0,
 
     status ENUM('draft', 'published', 'archived') DEFAULT 'draft',
 

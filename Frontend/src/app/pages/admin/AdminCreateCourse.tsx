@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Trash2, Upload, X, Video, GripVertical } from 'lucide-react';
 
@@ -19,13 +19,16 @@ interface Module {
 export function AdminCreateCourse() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<{ id: number, name: string }[]>([]);
 
   const [courseData, setCourseData] = useState({
     title: '',
+    shortDescription: '',
     category: '',
     status: 'draft' as 'draft' | 'published' | 'archived',
     description: '',
     price: '',
+    discountPrice: '',
     level: 'beginner' as 'beginner' | 'intermediate' | 'advanced',
   });
 
@@ -38,20 +41,24 @@ export function AdminCreateCourse() {
     },
   ]);
 
-  // Estados para subida de imagen
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
-  const categories = [
-    'BIM Management',
-    'Revit',
-    'BIM Coordination',
-    'MEP',
-    'Automatización',
-    'Estructural',
-    'Arquitectura',
-    'Construcción',
-  ];
+  useEffect(() => {
+    // Cargar categorías
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/courses/categories');
+        const data = await res.json();
+        if (data.success) {
+          setCategories(data.categories);
+        }
+      } catch (err) {
+        console.error('Error cargando categorias:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const addModule = () => {
     const newModule: Module = {
@@ -97,11 +104,11 @@ export function AdminCreateCourse() {
     setModules(modules.map(m =>
       m.id === moduleId
         ? {
-            ...m,
-            lessons: m.lessons.map(l =>
-              l.id === lessonId ? { ...l, [field]: value } : l
-            ),
-          }
+          ...m,
+          lessons: m.lessons.map(l =>
+            l.id === lessonId ? { ...l, [field]: value } : l
+          ),
+        }
         : m
     ));
   };
@@ -111,15 +118,17 @@ export function AdminCreateCourse() {
     setLoading(true);
 
     const formData = new FormData();
-    
+
     formData.append('title', courseData.title);
+    formData.append('shortDescription', courseData.shortDescription);
     formData.append('description', courseData.description);
-    formData.append('category_id', courseData.category);
+    formData.append('category_id', courseData.category); // Enviaremos el ID o nombre si es nuevo
     formData.append('level', courseData.level);
     formData.append('price', courseData.price);
+    formData.append('discountPrice', courseData.discountPrice);
     formData.append('status', courseData.status);
     formData.append('modules', JSON.stringify(modules));
-    
+
     if (thumbnailFile) {
       formData.append('thumbnail', thumbnailFile);
     }
@@ -131,10 +140,13 @@ export function AdminCreateCourse() {
         body: formData
       });
 
+      const resData = await res.json();
+
       if (res.ok) {
-        navigate('/admin/courses');
+        // Redirigir a la vista previa
+        navigate(`/admin/courses/preview/${resData.courseId}`);
       } else {
-        alert('Ocurrio un error al crear el curso');
+        alert('Ocurrio un error al crear el curso: ' + (resData.message || ''));
       }
 
     } catch (error) {
@@ -146,14 +158,9 @@ export function AdminCreateCourse() {
   };
 
   const totalLessons = modules.reduce((acc, m) => acc + m.lessons.length, 0);
-  const totalVideos = modules.reduce(
-    (acc, m) => acc + m.lessons.length,
-    0
-  );
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <button
           onClick={() => navigate('/admin/courses')}
@@ -170,7 +177,6 @@ export function AdminCreateCourse() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Información General */}
         <div className="rounded-xl border border-border bg-card p-6">
           <h2 className="text-2xl font-bold mb-6">Información General</h2>
           <div className="grid md:grid-cols-2 gap-6">
@@ -188,6 +194,19 @@ export function AdminCreateCourse() {
               />
             </div>
 
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-2">
+                Descripción Corta
+              </label>
+              <textarea
+                value={courseData.shortDescription}
+                onChange={(e) => setCourseData({ ...courseData, shortDescription: e.target.value })}
+                rows={2}
+                placeholder="Resumen corto del curso para la vista previa..."
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+              />
+            </div>
+
             <div>
               <label className="block text-sm font-medium mb-2">Categoría Principal *</label>
               <select
@@ -198,7 +217,7 @@ export function AdminCreateCourse() {
               >
                 <option value="">Seleccionar categoría</option>
                 {categories.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
                 ))}
               </select>
             </div>
@@ -240,14 +259,24 @@ export function AdminCreateCourse() {
               />
             </div>
 
-            {/* ✅ Campo de subida de imagen */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Precio con Descuento (COP)</label>
+              <input
+                type="number"
+                value={courseData.discountPrice}
+                onChange={(e) => setCourseData({ ...courseData, discountPrice: e.target.value })}
+                placeholder="Opcional"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-2">Imagen de Portada</label>
+              <label className="block text-sm font-medium mb-2">Imagen de Portada (Cloudinary)</label>
               <div className="relative border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors">
                 {thumbnailPreview ? (
                   <div className="relative">
                     <img src={thumbnailPreview} alt="Preview" className="max-h-48 mx-auto rounded-lg mb-4" />
-                    <button 
+                    <button
                       type="button"
                       onClick={() => {
                         setThumbnailFile(null);
@@ -281,7 +310,7 @@ export function AdminCreateCourse() {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-2">Descripción</label>
+              <label className="block text-sm font-medium mb-2">Descripción Detallada</label>
               <textarea
                 value={courseData.description}
                 onChange={(e) => setCourseData({ ...courseData, description: e.target.value })}
@@ -293,7 +322,6 @@ export function AdminCreateCourse() {
           </div>
         </div>
 
-        {/* Módulos y Lecciones */}
         <div className="rounded-xl border border-border bg-card p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -351,7 +379,6 @@ export function AdminCreateCourse() {
                       className="w-full px-4 py-3 rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                     />
 
-                    {/* Lecciones del Módulo */}
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">
@@ -437,7 +464,6 @@ export function AdminCreateCourse() {
           </div>
         </div>
 
-        {/* Acciones */}
         <div className="flex items-center justify-end gap-4 pb-8">
           <button
             type="button"
@@ -451,7 +477,7 @@ export function AdminCreateCourse() {
             disabled={loading}
             className="px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium disabled:opacity-50"
           >
-            {loading ? 'Creando curso...' : 'Crear Curso'}
+            {loading ? 'Creando curso...' : 'Crear Curso y Ver Vista Previa'}
           </button>
         </div>
       </form>

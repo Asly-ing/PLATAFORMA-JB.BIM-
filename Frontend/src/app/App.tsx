@@ -23,6 +23,7 @@ import { AdminCreateCourse } from '@/app/pages/admin/AdminCreateCourse';
 import AssignmentSubmission from '@/app/pages/AssignmentSubmission'
 import CoursePlayer from '@/app/pages/CoursePlayer'
 import { Certifications } from '@/app/pages/Certifications';
+import { AdminCoursePreview } from '@/app/pages/admin/AdminCoursePreview';
 
 // Dashboard sub-pages
 import { DashboardHome } from '@/app/pages/dashboard/DashboardHome'
@@ -94,13 +95,14 @@ function AppRoutes() {
         <Route path="settings" element={<DashboardSettings />} />
       </Route>
 
- {/* Admin Routes - Sin Header/Footer */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminOverview />} />
-            <Route path="/admin/courses" element={<AdminCourses />} />
-            <Route path="/admin/courses/create" element={<AdminCreateCourse />} />
-            <Route path="users" element={<AdminUsers />} />
-          </Route>
+// Admin Routes - Sin Header/Footer
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminOverview />} />
+        <Route path="courses" element={<AdminCourses />} />
+        <Route path="courses/create" element={<AdminCreateCourse />} />
+        <Route path="courses/preview/:id" element={<AdminCoursePreview />} />
+        <Route path="users" element={<AdminUsers />} />
+      </Route>
 
       {/* ===== RUTAS CON Header/Footer ===== */}
       <Route
@@ -117,7 +119,7 @@ function AppRoutes() {
                 <Route path="/community" element={<Community />} />
                 <Route path="/libraries" element={<Libraries />} />
                 <Route path="/certifications" element={<Certifications />} />
-           
+
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
 
