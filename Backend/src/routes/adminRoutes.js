@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import * as adminController from '../controllers/adminCourseController.js';
+import * as adminUserController from '../controllers/adminUserController.js';
 import { protect, restrictTo } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -35,5 +36,13 @@ router.post('/courses', upload.single('thumbnail'), adminController.createCourse
 router.put('/courses/:id', upload.single('thumbnail'), adminController.updateCourse);
 router.delete('/courses/:id', adminController.deleteCourse);
 router.patch('/courses/:id/status', adminController.updateCourseStatus);
+
+// Rutas de usuarios
+router.get('/users', adminUserController.getAllUsers);
+router.get('/users/export', adminUserController.downloadUsersReport); // Antes de /:id
+router.delete('/users/:id', adminUserController.deleteUser);
+router.get('/users/:id/courses', adminUserController.getUserCourses);
+router.post('/users/:id/enroll', adminUserController.enrollUser);
+router.delete('/users/:id/enroll/:courseId', adminUserController.unenrollUser);
 
 export default router;

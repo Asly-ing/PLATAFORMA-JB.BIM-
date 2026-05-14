@@ -1,103 +1,81 @@
 import { Link } from 'react-router-dom';
 import { Search, Filter, Star, Clock, Users, BookOpen } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { courseService, Course } from '../../services/courseService';
 
 export function Courses() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const courses = [
-    {
-      id: 1,
-      title: 'Fundamentos de BIM',
-      category: 'BIM Básico',
-      instructor: 'Juan Pérez',
-      level: 'Principiante',
-      duration: '8 horas',
-      rating: 4.8,
-      students: 2400,
-      lessons: 24,
-      progress: 0,
-      image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=250&fit=crop'
-    },
-    {
-      id: 2,
-      title: 'Revit Arquitectónico Avanzado',
-      category: 'Revit',
-      instructor: 'María García',
-      level: 'Avanzado',
-      duration: '12 horas',
-      rating: 4.9,
-      students: 1800,
-      lessons: 36,
-      progress: 0,
-      image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=250&fit=crop'
-    },
-    {
-      id: 3,
-      title: 'Coordinación BIM con Navisworks',
-      category: 'Coordinación',
-      instructor: 'Carlos Rodríguez',
-      level: 'Intermedio',
-      duration: '10 horas',
-      rating: 4.7,
-      students: 1500,
-      lessons: 28,
-      progress: 0,
-      image: 'https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=400&h=250&fit=crop'
-    },
-    {
-      id: 4,
-      title: 'BIM Manager: Gestión de Proyectos',
-      category: 'Gestión',
-      instructor: 'Ana Martínez',
-      level: 'Avanzado',
-      duration: '15 horas',
-      rating: 4.9,
-      students: 1200,
-      lessons: 42,
-      progress: 0,
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop'
-    },
-    {
-      id: 5,
-      title: 'Revit MEP: Instalaciones',
-      category: 'Revit',
-      instructor: 'Luis Fernández',
-      level: 'Intermedio',
-      duration: '10 horas',
-      rating: 4.6,
-      students: 980,
-      lessons: 30,
-      progress: 0,
-      image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=400&h=250&fit=crop'
-    },
-    {
-      id: 6,
-      title: 'Dynamo para Revit',
-      category: 'Programación',
-      instructor: 'Patricia Sánchez',
-      level: 'Avanzado',
-      duration: '14 horas',
-      rating: 4.8,
-      students: 850,
-      lessons: 38,
-      progress: 0,
-      image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=250&fit=crop'
-    }
-  ];
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [categories, setCategories] = useState<{id: number, name: string}[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const categories = ['all', 'BIM Básico', 'Revit', 'Coordinación', 'Gestión', 'Programación'];
-  const levels = ['all', 'Principiante', 'Intermedio', 'Avanzado'];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [fetchedCourses, fetchedCategories] = await Promise.all([
+          courseService.getAllCourses(),
+          courseService.getCategories()
+        ]);
+        setCourses(fetchedCourses);
+        setCategories(fetchedCategories);
+      } catch (err) {
+        console.error(err);
+        setError('Error al cargar los cursos. Por favor, intenta de nuevo más tarde.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const levels = ['all', 'beginner', 'intermediate', 'advanced'];
+
+  const getLevelName = (level: string) => {
+    const names: Record<string, string> = {
+      'beginner': 'Principiante',
+      'intermediate': 'Intermedio',
+      'advanced': 'Avanzado',
+      'all': 'Todos los niveles'
+    };
+    return names[level] || level;
+  };
+
+  const formatDuration = (minutes: number) => {
+    if (!minutes) return '0 h';
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    return `${hours} horas`;
+  };
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
+                         (course.instructor_name && course.instructor_name.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
-    const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || course.category_id?.toString() === selectedCategory;
     return matchesSearch && matchesLevel && matchesCategory;
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen py-12 flex items-center justify-center">
+        <div className="text-xl text-muted-foreground animate-pulse">Cargando cursos...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen py-12 flex items-center justify-center">
+        <div className="text-xl text-destructive">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-12">
@@ -135,7 +113,7 @@ export function Courses() {
               >
                 {levels.map(level => (
                   <option key={level} value={level}>
-                    {level === 'all' ? 'Todos los niveles' : level}
+                    {getLevelName(level)}
                   </option>
                 ))}
               </select>
@@ -147,9 +125,10 @@ export function Courses() {
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
             >
+              <option value="all">Todas las categorías</option>
               {categories.map(category => (
-                <option key={category} value={category}>
-                  {category === 'all' ? 'Todas las categorías' : category}
+                <option key={category.id} value={category.id.toString()}>
+                  {category.name}
                 </option>
               ))}
             </select>
@@ -173,42 +152,44 @@ export function Courses() {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={course.image}
+                  src={course.image_url || 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=250&fit=crop'}
                   alt={course.title}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium">
-                  {course.level}
+                  {getLevelName(course.level)}
                 </div>
               </div>
               <div className="p-6">
                 <div className="text-xs text-primary mb-2 font-medium">
-                  {course.category}
+                  {course.category_name || 'Sin Categoría'}
                 </div>
                 <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
                   {course.title}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  {course.instructor}
+                  {course.instructor_name || 'Instructor'}
                 </p>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                   <div className="flex items-center gap-1">
                     <BookOpen className="h-4 w-4" />
-                    <span>{course.lessons} lecciones</span>
+                    {/* Mocking lessons count since backend list doesn't provide it */}
+                    <span>{course.sections?.reduce((acc, section) => acc + (section.lessons?.length || 0), 0) || 0} lecciones</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="h-4 w-4" />
-                    <span>{course.duration}</span>
+                    <span>{formatDuration(course.duration_minutes)}</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-sm border-t border-border pt-4">
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                    <span className="font-medium">{course.rating}</span>
+                    <span>4.8</span>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>{course.students.toLocaleString()}</span>
+                    {/* Mocking students count */}
+                    <span>1,200</span>
                   </div>
                 </div>
               </div>

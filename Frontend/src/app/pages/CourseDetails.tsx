@@ -1,69 +1,82 @@
 import { useParams, Link } from 'react-router-dom';
 import { Play, Clock, Users, Award, CheckCircle2, BookOpen, Star, ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PaymentModal } from '@/app/components/PaymentModal';
+import { courseService, Course } from '../../services/courseService';
 
 export function CourseDetails() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
-  // Mock data - in real app, fetch based on id
-  const course = {
-    id: parseInt(id || '1'),
-    title: 'Fundamentos de BIM',
-    subtitle: 'Aprende los conceptos básicos de Building Information Modeling',
-    instructor: 'Juan Pérez',
-    instructorBio: 'Arquitecto con 15 años de experiencia en proyectos BIM',
-    level: 'Principiante',
-    duration: '8 horas',
-    rating: 4.8,
-    reviewsCount: 245,
-    students: 2400,
-    lessons: 24,
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=500&fit=crop',
-    price: 49.99,
-    description: 'Este curso te introducirá al fascinante mundo del BIM. Aprenderás los conceptos fundamentales, metodologías de trabajo y las principales herramientas utilizadas en la industria de la construcción.',
-    whatYouWillLearn: [
-      'Conceptos fundamentales de BIM',
-      'Diferencias entre CAD y BIM',
-      'Metodologías de trabajo colaborativo',
-      'Niveles de desarrollo (LOD)',
-      'Casos de uso prácticos',
-      'Normativas y estándares BIM'
-    ],
-    curriculum: [
-      {
-        title: 'Introducción al BIM',
-        lessons: [
-          { title: '¿Qué es BIM?', duration: '15 min', completed: false },
-          { title: 'Historia y evolución', duration: '20 min', completed: false },
-          { title: 'Beneficios del BIM', duration: '18 min', completed: false }
-        ]
-      },
-      {
-        title: 'Metodologías BIM',
-        lessons: [
-          { title: 'Procesos colaborativos', duration: '25 min', completed: false },
-          { title: 'Roles en un proyecto BIM', duration: '22 min', completed: false },
-          { title: 'Plan de ejecución BIM', duration: '30 min', completed: false }
-        ]
-      },
-      {
-        title: 'Niveles de desarrollo',
-        lessons: [
-          { title: 'LOD 100-200', duration: '20 min', completed: false },
-          { title: 'LOD 300-400', duration: '20 min', completed: false },
-          { title: 'LOD 500', duration: '15 min', completed: false }
-        ]
+  const [course, setCourse] = useState<Course | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      if (!id) return;
+      try {
+        setLoading(true);
+        const data = await courseService.getCourseById(id);
+        setCourse(data);
+      } catch (err) {
+        console.error(err);
+        setError('Error al cargar los detalles del curso. Por favor, intenta de nuevo más tarde.');
+      } finally {
+        setLoading(false);
       }
-    ],
-    requirements: [
-      'Conocimientos básicos de arquitectura o ingeniería',
-      'Computadora con al menos 8GB de RAM',
-      'Ganas de aprender'
-    ]
+    };
+
+    fetchCourse();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen py-12 flex items-center justify-center">
+        <div className="text-xl text-muted-foreground animate-pulse">Cargando detalles del curso...</div>
+      </div>
+    );
+  }
+
+  if (error || !course) {
+    return (
+      <div className="min-h-screen py-12 flex flex-col items-center justify-center gap-4">
+        <div className="text-xl text-destructive">{error || 'Curso no encontrado'}</div>
+        <Link to="/courses" className="text-primary hover:underline">
+          Volver a Cursos
+        </Link>
+      </div>
+    );
+  }
+
+  const getLevelName = (level: string) => {
+    const names: Record<string, string> = {
+      'beginner': 'Principiante',
+      'intermediate': 'Intermedio',
+      'advanced': 'Avanzado'
+    };
+    return names[level] || level;
   };
+
+  const formatDuration = (minutes: number) => {
+    if (!minutes) return '0 min';
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return mins > 0 ? `${hours}h ${mins}m` : `${hours} horas`;
+  };
+
+  // Process multiline text to array
+  const learningObjectives = course.learning_objectives 
+    ? course.learning_objectives.split('\n').filter(line => line.trim().length > 0)
+    : ['Conceptos fundamentales', 'Casos de uso prácticos'];
+
+  const requirementsList = course.requirements
+    ? course.requirements.split('\n').filter(line => line.trim().length > 0)
+    : ['Ganas de aprender'];
+
+  const totalLessons = course.sections?.reduce((acc, section) => acc + (section.lessons?.length || 0), 0) || 0;
 
   return (
     <div className="min-h-screen">
@@ -80,39 +93,39 @@ export function CourseDetails() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
               <div className="inline-block px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium mb-4">
-                {course.level}
+                {getLevelName(course.level)}
               </div>
               <h1 className="text-3xl md:text-4xl font-bold mb-4">
                 {course.title}
               </h1>
               <p className="text-lg text-muted-foreground mb-6">
-                {course.subtitle}
+                {course.subtitle || course.short_description}
               </p>
               <div className="flex flex-wrap items-center gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-semibold">
-                    {course.instructor.split(' ').map(n => n[0]).join('')}
+                    {course.instructor_name ? course.instructor_name.split(' ').map((n: string) => n[0]).join('').substring(0, 2) : 'I'}
                   </div>
                   <div>
-                    <p className="font-medium">{course.instructor}</p>
+                    <p className="font-medium">{course.instructor_name || 'Instructor'}</p>
                     <p className="text-muted-foreground text-xs">Instructor</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
                   <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                  <span className="font-medium">{course.rating}</span>
-                  <span className="text-muted-foreground">({course.reviewsCount} reseñas)</span>
+                  <span className="font-medium">4.8</span>
+                  <span className="text-muted-foreground">(245 reseñas)</span>
                 </div>
                 <div className="flex items-center gap-1 text-muted-foreground">
                   <Users className="h-4 w-4" />
-                  <span>{course.students.toLocaleString()} estudiantes</span>
+                  <span>2,400 estudiantes</span>
                 </div>
               </div>
             </div>
             <div className="md:col-span-1">
               <div className="rounded-xl border border-border overflow-hidden bg-card sticky top-20">
                 <img
-                  src={course.image}
+                  src={course.image_url || 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=500&fit=crop'}
                   alt={course.title}
                   className="w-full h-48 object-cover"
                 />
@@ -129,11 +142,11 @@ export function CourseDetails() {
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center gap-3">
                       <Clock className="h-5 w-5 text-muted-foreground" />
-                      <span>{course.duration} de contenido</span>
+                      <span>{formatDuration(course.duration_minutes)} de contenido</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <BookOpen className="h-5 w-5 text-muted-foreground" />
-                      <span>{course.lessons} lecciones</span>
+                      <span>{totalLessons} lecciones</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Award className="h-5 w-5 text-muted-foreground" />
@@ -187,14 +200,14 @@ export function CourseDetails() {
               <div className="space-y-8">
                 <div>
                   <h3 className="text-xl font-semibold mb-4">Sobre este curso</h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
                     {course.description}
                   </p>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-4">Lo que aprenderás</h3>
                   <div className="grid md:grid-cols-2 gap-3">
-                    {course.whatYouWillLearn.map((item, index) => (
+                    {learningObjectives.map((item: string, index: number) => (
                       <div key={index} className="flex items-start gap-3">
                         <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0 mt-0.5" />
                         <span className="text-sm">{item}</span>
@@ -205,7 +218,7 @@ export function CourseDetails() {
                 <div>
                   <h3 className="text-xl font-semibold mb-4">Requisitos</h3>
                   <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                    {course.requirements.map((req, index) => (
+                    {requirementsList.map((req: string, index: number) => (
                       <li key={index}>{req}</li>
                     ))}
                   </ul>
@@ -215,24 +228,32 @@ export function CourseDetails() {
 
             {activeTab === 'curriculum' && (
               <div className="space-y-4">
-                {course.curriculum.map((section, sectionIndex) => (
-                  <div key={sectionIndex} className="border border-border rounded-lg overflow-hidden">
-                    <div className="bg-muted p-4">
-                      <h3 className="font-semibold">{section.title}</h3>
+                {course.sections && course.sections.length > 0 ? (
+                  course.sections.map((section, sectionIndex) => (
+                    <div key={sectionIndex} className="border border-border rounded-lg overflow-hidden">
+                      <div className="bg-muted p-4">
+                        <h3 className="font-semibold">{section.title}</h3>
+                      </div>
+                      <div className="divide-y divide-border">
+                        {section.lessons && section.lessons.length > 0 ? (
+                          section.lessons.map((lesson, lessonIndex) => (
+                            <div key={lessonIndex} className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors">
+                              <div className="flex items-center gap-3">
+                                <Play className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm">{lesson.title}</span>
+                              </div>
+                              <span className="text-xs text-muted-foreground">{formatDuration(lesson.duration_minutes)}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="p-4 text-sm text-muted-foreground">No hay lecciones en esta sección.</div>
+                        )}
+                      </div>
                     </div>
-                    <div className="divide-y divide-border">
-                      {section.lessons.map((lesson, lessonIndex) => (
-                        <div key={lessonIndex} className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors">
-                          <div className="flex items-center gap-3">
-                            <Play className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm">{lesson.title}</span>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{lesson.duration}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <div className="text-muted-foreground">El contenido del curso aún no está disponible.</div>
+                )}
               </div>
             )}
 
@@ -240,11 +261,11 @@ export function CourseDetails() {
               <div>
                 <div className="flex items-start gap-4 mb-6">
                   <div className="h-20 w-20 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-2xl font-semibold">
-                    {course.instructor.split(' ').map(n => n[0]).join('')}
+                    {course.instructor_name ? course.instructor_name.split(' ').map((n: string) => n[0]).join('').substring(0, 2) : 'I'}
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-1">{course.instructor}</h3>
-                    <p className="text-muted-foreground">{course.instructorBio}</p>
+                    <h3 className="text-xl font-semibold mb-1">{course.instructor_name || 'Instructor'}</h3>
+                    <p className="text-muted-foreground">Instructor de la plataforma</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-4 p-6 bg-muted rounded-lg">
