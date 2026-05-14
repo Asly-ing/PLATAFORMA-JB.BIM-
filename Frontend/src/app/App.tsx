@@ -24,6 +24,7 @@ import AssignmentSubmission from '@/app/pages/AssignmentSubmission'
 import CoursePlayer from '@/app/pages/CoursePlayer'
 import { Certifications } from '@/app/pages/Certifications';
 import { AdminCoursePreview } from '@/app/pages/admin/AdminCoursePreview';
+import Payment from '@/app/pages/Payment';
 
 // Dashboard sub-pages
 import { DashboardHome } from '@/app/pages/dashboard/DashboardHome'
@@ -132,6 +133,9 @@ function AppRoutes() {
                 } />
                 <Route path="/courses/:id/learn" element={
                   <ProtectedRoute><CoursePlayer /></ProtectedRoute>
+                } />
+                <Route path="/payment/:id" element={
+                  <ProtectedRoute><Payment /></ProtectedRoute>
                 } />
                 <Route path="/courses/:courseId/assignments/:assignmentId" element={
                   <ProtectedRoute><AssignmentSubmission /></ProtectedRoute>

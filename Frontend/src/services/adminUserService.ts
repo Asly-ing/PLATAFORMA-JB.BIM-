@@ -69,18 +69,18 @@ export const adminUserService = {
         withCredentials: true,
         responseType: 'blob', // Important for downloading files
       });
-      
+
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      
+
       // Extract filename from header if possible, else default
       let fileName = 'Reporte_Usuarios.xlsx';
       const contentDisposition = response.headers['content-disposition'];
       if (contentDisposition && contentDisposition.indexOf('filename=') !== -1) {
         fileName = contentDisposition.split('filename=')[1].replace(/"/g, '');
       }
-      
+
       link.setAttribute('download', fileName);
       document.body.appendChild(link);
       link.click();

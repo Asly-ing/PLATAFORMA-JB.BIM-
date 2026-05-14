@@ -9,7 +9,7 @@ export const getAllUsers = async (req, res) => {
         u.name, 
         u.email, 
         u.role, 
-        u.status,
+        'active' as status,
         DATE_FORMAT(u.created_at, '%d %b %Y') as joined,
         DATE_FORMAT(u.updated_at, 'Hace %h horas') as lastActive,
         (SELECT COUNT(*) FROM enrollments e WHERE e.user_id = u.id) as enrolled
@@ -105,7 +105,7 @@ export const downloadUsersReport = async (req, res) => {
         u.name, 
         u.email, 
         u.role,
-        u.status,
+        'active' as status,
         DATE_FORMAT(u.created_at, '%Y-%m-%d %H:%i:%s') as join_date,
         (SELECT COUNT(*) FROM enrollments e WHERE e.user_id = u.id) as total_courses
       FROM users u

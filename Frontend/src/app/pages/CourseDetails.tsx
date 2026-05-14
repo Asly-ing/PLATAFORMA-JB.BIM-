@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Play, Clock, Users, Award, CheckCircle2, BookOpen, Star, ArrowLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { PaymentModal } from '@/app/components/PaymentModal';
@@ -6,6 +6,7 @@ import { courseService, Course } from '../../services/courseService';
 
 export function CourseDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
@@ -133,7 +134,7 @@ export function CourseDetails() {
                   <div className="text-3xl font-bold text-primary mb-4">
                     ${course.price}
                   </div>
-                  <button className="w-full px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors mb-3" onClick={() => setIsPaymentModalOpen(true)}>
+                  <button className="w-full px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors mb-3" onClick={() => navigate('/payment/' + course.id)}>
                     Inscribirse Ahora
                   </button>
                   <p className="text-xs text-center text-muted-foreground mb-4">
